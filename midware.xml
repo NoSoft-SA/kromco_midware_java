@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="midware" default="all">
+  
+  
+  <property file="midware.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  <property name="javac2.home" value="${idea.home}/lib"/>
+  <path id="javac2.classpath">
+    <pathelement location="${javac2.home}/javac2.jar"/>
+    <pathelement location="${javac2.home}/jdom.jar"/>
+    <pathelement location="${javac2.home}/asm.jar"/>
+    <pathelement location="${javac2.home}/asm-commons.jar"/>
+    <pathelement location="${javac2.home}/jgoodies-forms.jar"/>
+  </path>
+  <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
+  <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions" classpathref="javac2.classpath"/>
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="128m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/SCCS/**"/>
+    <exclude name="**/RCS/**"/>
+    <exclude name="**/rcs/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/.pyc/**"/>
+    <exclude name="**/.pyo/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/.hg/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.zip"/>
+    <include name="*.war"/>
+    <include name="*.egg"/>
+    <include name="*.ear"/>
+    <include name="*.swc"/>
+    <include name="*.jar"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <include name="**/?*.properties"/>
+    <include name="**/?*.xml"/>
+    <include name="**/?*.gif"/>
+    <include name="**/?*.png"/>
+    <include name="**/?*.jpeg"/>
+    <include name="**/?*.jpg"/>
+    <include name="**/?*.html"/>
+    <include name="**/?*.dtd"/>
+    <include name="**/?*.tld"/>
+    <include name="**/?*.ftl"/>
+  </patternset>
+  
+  <!-- JDK definitions -->
+  
+  <property name="jdk.bin.1.6" value="${jdk.home.1.6}/bin"/>
+  <path id="jdk.classpath.1.6">
+    <fileset dir="${jdk.home.1.6}">
+      <include name="jre/lib/alt-rt.jar"/>
+      <include name="jre/lib/charsets.jar"/>
+      <include name="jre/lib/deploy.jar"/>
+      <include name="jre/lib/javaws.jar"/>
+      <include name="jre/lib/jce.jar"/>
+      <include name="jre/lib/jsse.jar"/>
+      <include name="jre/lib/management-agent.jar"/>
+      <include name="jre/lib/plugin.jar"/>
+      <include name="jre/lib/resources.jar"/>
+      <include name="jre/lib/rt.jar"/>
+      <include name="jre/lib/ext/dnsns.jar"/>
+      <include name="jre/lib/ext/localedata.jar"/>
+      <include name="jre/lib/ext/sunjce_provider.jar"/>
+      <include name="jre/lib/ext/sunmscapi.jar"/>
+      <include name="jre/lib/ext/sunpkcs11.jar"/>
+      <include name="../../../jmt/lib/Eagle/edrejava.jar"/>
+      <include name="../../../jmt/lib/ibatis/ibatis-2.3.0.677.jar"/>
+      <include name="../../../jmt/lib/informix/ifxjdbc.jar"/>
+      <include name="../../../jmt/lib/jmt/JmtMesware.jar"/>
+      <include name="../../../jmt/lib/netbeans/AbsoluteLayout.jar"/>
+      <include name="../../../jmt/lib/postgres/postgresql-8.1-408.jdbc3.jar"/>
+      <include name="../../../jmt/lib/sun/activation.jar"/>
+      <include name="../../../jmt/lib/sun/comm.jar"/>
+      <include name="../../../jmt/lib/sun/commons-beanutils.jar"/>
+      <include name="../../../jmt/lib/sun/commons-collections.jar"/>
+      <include name="../../../jmt/lib/sun/commons-digester.jar"/>
+      <include name="../../../jmt/lib/sun/jdom.jar"/>
+      <include name="../../../jmt/lib/sun/junit.jar"/>
+      <include name="../../../jmt/lib/sun/mail.jar"/>
+      <include name="../../../jmt/lib/sun/smtp.jar"/>
+      <include name="../../../jmt/lib/sun/xerces.jar"/>
+      <include name="../../../jmt/lib/sun/common11.jar"/>
+      <include name="../../../projects/midware_env/mwserver"/>
+      <include name="../../../projects/midware_env/midware_config/map_files"/>
+      <include name="../../../projects/midware_env/midware_config"/>
+    </fileset>
+  </path>
+  
+  <property name="project.jdk.home" value="${jdk.home.1.6}"/>
+  <property name="project.jdk.bin" value="${jdk.bin.1.6}"/>
+  <property name="project.jdk.classpath" value="jdk.classpath.1.6"/>
+  
+  <!-- Modules -->
+  
+  <import file="${basedir}/module_midware.xml"/>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.midware" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.midware" description="build all modules"/>
+  
+  <target name="init.artifacts">
+    <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
+    <property name="artifact.output.jmtmidware" value="${basedir}/out/artifacts/JmtMidware"/>
+    <mkdir dir="${artifacts.temp.dir}"/>
+    <property name="temp.jar.path.JmtMidware.jar" value="${artifacts.temp.dir}/JmtMidware.jar"/>
+  </target>
+  
+  <target name="artifact.jmtmidware" depends="init.artifacts" description="Build &apos;JmtMidware&apos; artifact">
+    <property name="artifact.temp.output.jmtmidware" value="${artifacts.temp.dir}/JmtMidware"/>
+    <mkdir dir="${artifact.temp.output.jmtmidware}"/>
+    <jar destfile="${temp.jar.path.JmtMidware.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain"/>
+    <copy file="${temp.jar.path.JmtMidware.jar}" tofile="${artifact.temp.output.jmtmidware}/JmtMidware.jar"/>
+  </target>
+  
+  <target name="build.all.artifacts" depends="artifact.jmtmidware" description="Build all artifacts">
+    <mkdir dir="${artifact.output.jmtmidware}"/>
+    <copy todir="${artifact.output.jmtmidware}">
+      <fileset dir="${artifact.temp.output.jmtmidware}"/>
+    </copy>
+    
+    <!-- Delete temporary files -->
+    <delete dir="${artifacts.temp.dir}"/>
+  </target>
+  
+  <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
+</project>
