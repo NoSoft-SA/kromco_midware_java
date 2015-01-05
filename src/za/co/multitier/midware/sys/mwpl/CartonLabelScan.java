@@ -148,6 +148,8 @@ public class CartonLabelScan extends ProductLabelScan {
 
 
         }
+
+        //just a little test for github
         String gtin_barcode = "";
         if (gtin.trim() != "") //user batch number
         {
