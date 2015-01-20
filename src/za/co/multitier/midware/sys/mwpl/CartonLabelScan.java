@@ -104,28 +104,30 @@ public class CartonLabelScan extends ProductLabelScan {
 
         }
 
-        System.out.println("This is hans' latest midware");
+        //---------------------------------------------------------------------------------
+        //check below is to see if carton's bin is of same production run as the active run
+        //---------------------------------------------------------------------------------
 
-        if (this.bin_number != null && this.bin_number != "") {
-            System.out.println("Bin number is: " + this.bin_number);
-            if (bin.getProduction_run_tipped_id() != null) {
-
-                System.out.println("Bin production run tipped id is: " + String.valueOf(bin.getProduction_run_tipped_id()));
-                System.out.println("Carton production run_id is: " + String.valueOf(run.getId()));
-
-                ProductionRun tip_run = ProductLabelingDAO.getProductionRun(bin.getProduction_run_tipped_id());
-
-                if (!tip_run.getProduction_run_code().equals(run.getProduction_run_code())) {
-                    System.out.println("Carton has different run to bin" + "(carton:" + run.getProduction_run_code() + "; bin: " + tip_run.getProduction_run_code() + ")");
-                    //TODO uncomment for live
-                    throw new Exception("Carton has different run to bin" + "(carton:" + run.getProduction_run_code() + "; bin: " + tip_run.getProduction_run_code() + ")");
-                } else {
-                    System.out.println("Bin and cartons has same run");
-                }
-            } else
-                System.out.println("Bin production run tipped id is null");
-        } else
-            System.out.println("Bin number is null or empty");
+//        if (this.bin_number != null && this.bin_number != "") {
+//            System.out.println("Bin number is: " + this.bin_number);
+//            if (bin.getProduction_run_tipped_id() != null) {
+//
+//                System.out.println("Bin production run tipped id is: " + String.valueOf(bin.getProduction_run_tipped_id()));
+//                System.out.println("Carton production run_id is: " + String.valueOf(run.getId()));
+//
+//                ProductionRun tip_run = ProductLabelingDAO.getProductionRun(bin.getProduction_run_tipped_id());
+//
+//                if (!tip_run.getProduction_run_code().equals(run.getProduction_run_code())) {
+//                    System.out.println("Carton has different run to bin" + "(carton:" + run.getProduction_run_code() + "; bin: " + tip_run.getProduction_run_code() + ")");
+//                    //TODO uncomment for live
+//                    throw new Exception("Carton has different run to bin" + "(carton:" + run.getProduction_run_code() + "; bin: " + tip_run.getProduction_run_code() + ")");
+//                } else {
+//                    System.out.println("Bin and cartons has same run");
+//                }
+//            } else
+//                System.out.println("Bin production run tipped id is null");
+//        } else
+//            System.out.println("Bin number is null or empty");
 
 
         this.carton_num = ProductLabelingDAO.getNextMesObjectId(ProductLabelingDAO.MesObjectTypes.CARTON);
@@ -284,6 +286,9 @@ public class CartonLabelScan extends ProductLabelScan {
 
         if (this.bin == null)
             this.packer = this.codeCollection[1].substring(2, 7);
+        else
+            this.packer = this.codeCollection[1];
+
 
         data.put("F21", this.packer);
         String gtin_readable;
@@ -486,6 +491,8 @@ public class CartonLabelScan extends ProductLabelScan {
             carton_template.setCarton_pack_station_code(this.codeCollection[0]);
             carton_template.setPacker_number(this.codeCollection[1]);
         }
+        else
+            carton_template.setPacker_number(this.codeCollection[1]);
 
         carton_template.setCarton_pack_station_code(this.active_device.getActive_device_code());
 

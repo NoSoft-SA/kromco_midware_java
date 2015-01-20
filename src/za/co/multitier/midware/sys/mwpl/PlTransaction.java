@@ -217,6 +217,13 @@ public class PlTransaction {
         String codeCollection[] = trData.codeCollection;
         String mass = trData.mass;
 
+//        if(codeCollection[0] != null)
+//            System.out.println("INPUT 1: " + codeCollection[0] );
+//
+//        if(codeCollection[1] != null)
+//            System.out.println("INPUT 2: " + codeCollection[1] );
+
+
         String resultStr = "";
         String scancode1 = codeCollection[0];
         String scancode2 = "";
