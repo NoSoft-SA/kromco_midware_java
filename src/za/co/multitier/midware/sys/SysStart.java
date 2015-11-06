@@ -11,7 +11,7 @@ package	za.co.multitier.midware.sys;
 import java.io.File;
 import java.util.*;
 
-import za.co.multitier.mesware.factories.*;
+/*import za.co.multitier.mesware.factories.*;
 import za.co.multitier.mesware.sys.mwcm.Cm;
 import za.co.multitier.mesware.sys.mwcsm.Csm;
 import za.co.multitier.mesware.sys.mwpl.Pl;
@@ -19,7 +19,7 @@ import za.co.multitier.mesware.sys.mwpt.Pt;
 //import za.co.multitier.mesware.sys.mwpl.ClmPl;
 import za.co.multitier.mesware.sys.mwserver.Server;
 import za.co.multitier.mesware.sys.mwrobot.Robot;
-import za.co.multitier.sys.SysInterface;
+import za.co.multitier.sys.SysInterface;    */
 
 /**
  * Description:	J&J Mesware Startup for the mesware systems

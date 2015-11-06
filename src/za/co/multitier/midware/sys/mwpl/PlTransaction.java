@@ -244,7 +244,11 @@ public class PlTransaction {
                 }
             }
 
+            if(bin_num != null)
+                scancode2 += " bin: " + bin_num;
+
             LogBeginTransaction(destinationIP, scancode1, scancode2, modeStr, mass);
+
             this.ip = destinationIP;
             this.station = scancode1;
             this.temp_scancode1 = scancode1;
@@ -287,8 +291,9 @@ public class PlTransaction {
                     ;
 
 
+
                     //System.out.println("CARTON LABEL INPUT: Mode: " + trData.mode + " IP: " + trData.destAddr + " Bin: " + trData.binNumber + " Scan1: " + scancode1 + " Scan2: " + scancode2);
-                    msg.sysMsg("CARTON LABEL INPUT: Mode: " + trData.mode + " IP: " + trData.destAddr+ " Bin: " + trData.binNumber + " Scan1: " + scancode1 + " Scan2: " + scancode2);
+                    msg.sysMsg("CARTON LABEL INPUT: Mode: " + trData.mode + " IP: " + trData.destAddr+ " Bin: " + trData.binNumber + " Scan1: " + scancode1 + " Scan2: " + scancode2 );
 
 
                     this.labeling_scan = new CartonLabelScan(trData.destAddr, mass, codeCollection, msg, this.mail, order_qty_from_address, order_qty_to_address,bin_num);

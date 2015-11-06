@@ -20,7 +20,7 @@ import za.co.multitier.mesware.services.email.MailInterface;
 
 import za.co.multitier.mesware.util.TransactionData;
 
-import za.co.multitier.mesware.factories.*;
+//import za.co.multitier.mesware.factories.*;
 
 import za.co.multitier.midware.sys.appservices.DeviceCommands.ROBOT_KEYPAD;
 import za.co.multitier.midware.sys.appservices.DeviceScan;
@@ -46,7 +46,7 @@ public class PtTransaction
 
 	private TransactionData				trData			= null;
 
-	private FactoryInterface			mwptMap			= null;
+	//private FactoryInterface			mwptMap			= null;
 
     public static Properties settings = MidwareConfig.getInstance().getSettings();
     public static String root_log_path = null;

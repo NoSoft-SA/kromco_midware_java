@@ -221,7 +221,7 @@ public class BinTippingDAO {
             if (bin.getBin_weight() == null || bin.getBin_weight() < 1.00) {
                 return "BIN NOT WEIGHED";
             } else {
-                System.out.println("Bin weighed");
+               // System.out.println("Bin weighed");
             }
 
 

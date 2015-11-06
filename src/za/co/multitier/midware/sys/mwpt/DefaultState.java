@@ -389,7 +389,10 @@ public abstract class DefaultState extends PalletizingState
 	  if(bay == null)
 	  {
 		 bay = PalletisingDAO.getBay(this.bay_num,this.skip_ip);
-		 bay.setActive_bay_transaction(this);
+		  if(bay != null)
+		    bay.setActive_bay_transaction(this);
+		  else
+			  throw new Exception("Bay cannot be found for skip " + this.skip_ip.toString() + " and bay " + this.bay_num.toString());
 	  }
 	  return bay;
 	  

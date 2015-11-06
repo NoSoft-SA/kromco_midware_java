@@ -163,6 +163,7 @@ public abstract class ProductLabelScan extends DeviceScan
 			String message = this.label_message; //set by subclass
 			message = message == null? "OK": message;
 			Map label_data = this.label_data;  //set by subclass
+
 			
 			StringBuilder label_intruction = new StringBuilder();
 			label_intruction.append(SysProtocol.TPRODUCTLABEL + "Status=\"true\" Threading=\"true\" RunNumber=\"");

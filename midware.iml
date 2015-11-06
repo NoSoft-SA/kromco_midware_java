@@ -122,7 +122,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../midware_env/lib/jmt/JmtMesware.jar!/" />
+          <root url="jar://$MODULE_DIR$/../dunbrody_midware_env/lib/postgres/postgresql-8.1-408.jdbc3.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -131,7 +131,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../dunbrody_midware_env/lib/postgres/postgresql-8.1-408.jdbc3.jar!/" />
+          <root url="jar://$MODULE_DIR$/../dunbrody_midware_env/lib/jmt/JmtMesScada.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -139,4 +139,3 @@
     </orderEntry>
   </component>
 </module>
-

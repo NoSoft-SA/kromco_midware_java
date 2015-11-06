@@ -135,9 +135,7 @@ public class ProductLabelingDAO
 		
 	}
 	
-	
-	
-	
+
 	public static String getSummaryGtin()
 	{
 		
