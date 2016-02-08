@@ -131,7 +131,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../dunbrody_midware_env/lib/jmt/JmtMesScada.jar!/" />
+          <root url="jar://$MODULE_DIR$/../midware_env/lib/jmt/JmtMesScada.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
