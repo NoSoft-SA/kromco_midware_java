@@ -104,6 +104,8 @@ public class Carton
 
 	private Double carton_fruit_nett_mass;
 
+	private Double cpc_tu_mass;
+
 	private Integer quantity;
 
 	private String pi;
@@ -939,4 +941,14 @@ public class Carton
     public void setBin_id(Integer bin_id) {
         this.bin_id = bin_id;
     }
+
+	public Double getCpc_tu_mass()
+	{
+		return cpc_tu_mass;
+	}
+
+	public void setCpc_tu_mass(Double cpc_tu_mass)
+	{
+		this.cpc_tu_mass = cpc_tu_mass;
+	}
 }

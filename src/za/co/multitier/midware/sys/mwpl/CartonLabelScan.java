@@ -216,6 +216,8 @@ public class CartonLabelScan extends ProductLabelScan
         data.put("F10", label_setup.getGrade_code());
         data.put("F11", run.getBatch_code());
 
+        boolean orchard_printed = false;
+
 
         try
         {
@@ -246,6 +248,7 @@ public class CartonLabelScan extends ProductLabelScan
             pc_code = run.getPc_code();
             pc_code_num = run.getPc_code_num();
 
+
             //for DP cartons, use pc-code defined on run itself
             if (bin != null)
             {
@@ -253,6 +256,7 @@ public class CartonLabelScan extends ProductLabelScan
                 {
                     data.put("F32", "ORCHARD");
                     data.put("F33", bin.getOrchard_code());
+                    orchard_printed = true;
                 }
 
 
@@ -404,67 +408,54 @@ public class CartonLabelScan extends ProductLabelScan
             data.put("F31", "");
 
 
-            //System.out.println("exit set label data");
 
-            //f29: extended fg code
-            //f30: pallet format product code
-
-            //----------------------------------------------------------------------------------------------------------
-            //Get schedule order details and determine if the order has been fullfilled as result this label's printing'
-            // IF SO: set the 'label_message' member variable to: "SCHED ORDER COMPLETED: " <order_quantity_produced>
-            //----------------------------------------------------------------------------------------------------------
-            //        String season_code = carton_template.getSeason_code() + "_" + carton_template.getCommodity_code();
-            //this.schedule_order_details = ProductLabelingDAO.getSeasonOrderQtyDetails(carton_template.getOrder_number(),season_code);
-//			int req_qty = 0;
-//                        int produced = 0;
-//			if(this.schedule_order_details!= null)
-//                        {
-//			    req_qty = (Integer)this.schedule_order_details.get("quantity_required");
-//			    produced = (Integer)this.schedule_order_details.get("quantity_produced");
-//			    this.schedule_order_details.put("quantity_produced",produced +1);
-//			}
-//			
-//			
-//			if(req_qty > 0)
-//			{
-//			   if(((Integer)this.schedule_order_details.get("quantity_produced")).intValue() >= req_qty)
-//                           {
-//				this.label_message = "CUSTOMER ORDER " + carton_template.getOrder_number() + "(required: " + String.valueOf(req_qty) + ", produced: " + ((Integer)this.schedule_order_details.get("quantity_produced")).toString() + ") FIN";
-//			
-//                           
-//                            String tos[] = new String[1];
-//                            tos[0] = to_address;
-//                            String lines[] = new String[9];
-//                            lines[0] = "<strong>" + this.label_message + "</strong><HR>";
-//                            lines[1] = "Product: " + carton_template.getExtended_fg_code() + "<BR>";
-//                            lines[2]= "Schedule: " + run.getProduction_schedule_name() + "<BR>";
-//                            lines[3] = "Run: " + run.getProduction_run_code() + "<BR>";
-//                            lines[4] = "Target market: " + carton_template.getTarget_market_code() + "<BR>";
-//                            lines[5] = "Carton setup code: " + ProductLabelingDAO.getCartonSetup(carton_template.getCarton_setup_id()).getCarton_setup_code() + "<BR>";
-//                            lines[6] = "Inventory code: " + carton_template.getInventory_code()+ "<BR>";
-//                            String station = this.codeCollection[0];
-//                            String drop = station.substring(1,3);
-//                            lines[7] = "Drop: " + drop + "<BR>";
-//                            lines[8] = "Station: " + station;
-//                            
-//                            try {
-//                //                          
-//                                mailer.mailTransmission(from_address,tos,"CARTON ORDER QUANTITY REACHED ",lines);
-//                            }
-//                                catch(Exception me)
-//                            {
-//                                me.printStackTrace();
-//                            }
-//                            
-//                           }
-//                        }
-            //} catch (Exception ex)
-            //{
-            //	throw new Exception("Label data could not be gathered. Reported exception: " + ex.toString());
-            //}
 
 
         }
+
+
+        //print empty lines for 32 & 33 if orchard, according to printing rule, was not printed. This is so that lines 34 onwards can be used
+        if(!orchard_printed)
+        {
+            data.put("F32","");
+            data.put("F33","");
+        }
+
+
+        String mass_printing_tms_text =  MidwareConfig.getInstance().getSettings().getProperty("tms_to_print_tu_mass");
+
+        if(mass_printing_tms_text != null)
+        {
+            String [] mass_printing_tms =    mass_printing_tms_text.split(",");
+
+            if (tm_in_list(carton_template.getTarget_market_code().split("_")[0], mass_printing_tms))
+            {
+
+                String cpc_mass = "";
+                if (carton_template.getCpc_tu_mass() != null)
+                    cpc_mass = String.valueOf(carton_template.getCpc_tu_mass()) + " kg";
+
+
+                data.put("F34", "Nett Mass");
+                data.put("F35", cpc_mass);
+            }
+        }
+
+
+
+
+
+    }
+
+
+    private  boolean tm_in_list(String tm,String[] tm_list)
+    {
+        for(int i=0; i< tm_list.length; i++){
+            if(tm_list[i].equals(tm))
+                return true;
+        }
+
+        return false;
     }
 
 
@@ -617,7 +608,7 @@ public class CartonLabelScan extends ProductLabelScan
 
         //System.out.println("exit label data");
         //TODO: comment out for live!!
-        // DataSource.getSqlMapInstance().commitTransaction();
+         //DataSource.getSqlMapInstance().commitTransaction();
 
 
         //} catch (Exception ex)
