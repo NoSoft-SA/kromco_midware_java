@@ -11,20 +11,25 @@ public class test {
 
           public static void main(String[] args)
           {
-              String pack_point_end_chars = "44DP44".substring("44DP44".length() - 2);
-              System.out.println(pack_point_end_chars);
 
-              if(test.isNumeric(pack_point_end_chars))
-              {
-                 int i = Integer.valueOf(pack_point_end_chars);
-              }
+              String val = "FE,EU,FdE";
+              String[] tms = val.split(",");
 
+              System.out.println(tm_in_list("FdEg",tms));
 
-              String tm = "NI_NOT INSPECT";
-              String s = tm.substring(0,2);
-              System.out.println(s);
 
           }
+
+
+    private static boolean tm_in_list(String tm,String[] tm_list)
+    {
+        for(int i=0; i< tm_list.length; i++){
+            if(tm_list[i].equals(tm))
+                return true;
+        }
+
+        return false;
+    }
 
 
           public static boolean isNumeric(String num)

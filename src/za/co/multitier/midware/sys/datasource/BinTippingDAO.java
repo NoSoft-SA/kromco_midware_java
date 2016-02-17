@@ -319,7 +319,17 @@ public class BinTippingDAO {
             //updateBinRunStats(bin);
             ProductLabelingDAO.updateRunStats(null, null, bin, null);
 
-            DeviceScan.send_integration_record("bin_tipped", bin.getBin_id().toString(), "Bin");
+            try
+            {
+
+                DeviceScan.send_integration_record("bin_tipped", bin.getBin_id().toString(), "Bin");
+            }
+            catch   (Exception ex)
+            {
+                //retry once
+                DeviceScan.send_integration_record("bin_tipped", bin.getBin_id().toString(), "Bin");
+
+            }
 
             DataSource.getSqlMapInstance().commitTransaction();
 
