@@ -249,10 +249,11 @@ public class CartonLabelScan extends ProductLabelScan
             pc_code_num = run.getPc_code_num();
 
 
+            //
             //for DP cartons, use pc-code defined on run itself
             if (bin != null)
             {
-                if (bin.getOrchard_code() != null && carton_template.getTarget_market_code().substring(0, 2).equals("NI"))
+                if (bin.getOrchard_code() != null && (carton_template.getTarget_market_code().substring(0, 2).equals("NI")||carton_template.getTarget_market_code().substring(0, 2).equals("FE")))
                 {
                     data.put("F32", "ORCHARD");
                     data.put("F33", bin.getOrchard_code());
@@ -608,7 +609,7 @@ public class CartonLabelScan extends ProductLabelScan
 
         //System.out.println("exit label data");
         //TODO: comment out for live!!
-         //DataSource.getSqlMapInstance().commitTransaction();
+        // DataSource.getSqlMapInstance().commitTransaction();
 
 
         //} catch (Exception ex)

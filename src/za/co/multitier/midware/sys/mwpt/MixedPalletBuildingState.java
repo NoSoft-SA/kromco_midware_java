@@ -60,7 +60,12 @@ public class MixedPalletBuildingState extends DefaultState
 		}
 		
 		boolean test_failed = false;
-		
+
+		//SELL BY CODE MUST ALWAYS BE SAME
+		if(!fg_setup.getRetailer_sell_by_code().equals(carton.getSell_by_code()))
+		 return false;
+
+
 		if((criteria.getGrade_code() != null && criteria.getProduct_class_code() != null) &&(criteria.getGrade_code()||criteria.getProduct_class_code())) //If either of these 2 is on, we need to decompose fg setup and check it's 'elements' indivudually
 		{
 			
@@ -128,13 +133,9 @@ public class MixedPalletBuildingState extends DefaultState
 		//FARM CODE
 		else if (criteria.getFarm_code()== true && !(run.getFarm_code().equals(carton.getFarm_code())))
 			test_failed = true;
-		
-		//SELL BY CODE
-		else if (criteria.getSell_by_code()== true && !(fg_setup.getRetailer_sell_by_code().equals(carton.getSell_by_code())))
-			test_failed = true;
-		
-                  
-          //UNITS PER CARTON
+
+
+			//UNITS PER CARTON
 	  else if (criteria.getUnits_per_carton()== true && !(carton_setup.getUnits_per_carton().equals(carton.getUnits_per_carton())))
 		 test_failed = true;
                 

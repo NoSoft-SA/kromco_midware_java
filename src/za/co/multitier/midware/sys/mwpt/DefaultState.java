@@ -568,6 +568,10 @@ public abstract class DefaultState extends PalletizingState
 	  //FG_CODE: COMPULSORY
 	  if(!pallet.getFg_product_code().equals(carton.getFg_product_code())) //fg codes must always match
 		 test_failed = true;
+
+		  //SELL BY CODE
+	  else if (!fg_setup.getRetailer_sell_by_code().equals(carton.getSell_by_code()))
+		  test_failed = true;
           
             //ORG_CODE: COMPULSORY
 	  if(!pallet.getOrganization_code().equals(carton.getOrganization_code())) //fg codes must always match
@@ -588,12 +592,9 @@ public abstract class DefaultState extends PalletizingState
 	  //FARM CODE
 	  else if (criteria.getFarm_code()== true && !(run.getFarm_code().equals(carton.getFarm_code())))
 		 test_failed = true;
-	  
-	  //SELL BY CODE
-	  else if (criteria.getSell_by_code()== true && !(fg_setup.getRetailer_sell_by_code().equals(carton.getSell_by_code())))
-		 test_failed = true;
-          
-          //UNITS PER CARTON
+
+
+		  //UNITS PER CARTON
 	  else if (criteria.getUnits_per_carton()== true && !(carton_setup.getUnits_per_carton().equals(carton.getUnits_per_carton())))
 		 test_failed = true;
 	  

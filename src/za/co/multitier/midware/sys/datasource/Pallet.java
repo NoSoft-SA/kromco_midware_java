@@ -335,6 +335,8 @@ public class Pallet
 	}
 
 	public String getInventory_code()
+
+
 	{
 		return inventory_code;
 	}
