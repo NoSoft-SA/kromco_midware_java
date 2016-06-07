@@ -48,6 +48,7 @@ public class Bin {
 
     private int error_code;
 
+
     private Double weight;
 
     //vals needed for bintip criteria check

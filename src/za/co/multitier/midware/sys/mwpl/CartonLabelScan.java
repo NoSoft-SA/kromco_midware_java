@@ -118,31 +118,31 @@ public class CartonLabelScan extends ProductLabelScan
 
         if (this.bin_number != null && this.bin_number != "")
         {
-            System.out.println("Bin number is: " + this.bin_number);
+          //  System.out.println("Bin number is: " + this.bin_number);
             if (bin.getProduction_run_tipped_id() != null)
             {
 
-                System.out.println("Bin production run tipped id is: " + String.valueOf(bin.getProduction_run_tipped_id()));
-                System.out.println("Carton production run_id is: " + String.valueOf(run.getId()));
+               // System.out.println("Bin production run tipped id is: " + String.valueOf(bin.getProduction_run_tipped_id()));
+               // System.out.println("Carton production run_id is: " + String.valueOf(run.getId()));
 
                 ProductionRun tip_run = ProductLabelingDAO.getProductionRun(bin.getProduction_run_tipped_id());
 
                 if (!tip_run.getProduction_run_code().equals(run.getProduction_run_code()))
                 {
-                    System.out.println("Carton has different run to bin" + "(carton:" + run.getProduction_run_code() + "; bin: " + tip_run.getProduction_run_code() + ")");
+                  //  System.out.println("Carton has different run to bin" + "(carton:" + run.getProduction_run_code() + "; bin: " + tip_run.getProduction_run_code() + ")");
                     //TODO uncomment for live
                     throw new Exception("Carton has different run to bin" + "(carton:" + run.getProduction_run_code() + "; bin: " + tip_run.getProduction_run_code() + ")");
                 }
                 else
                 {
-                    System.out.println("Bin and cartons has same run");
+                   // System.out.println("Bin and cartons has same run");
                 }
             }
             else
-                System.out.println("Bin production run tipped id is null");
+              ;//  System.out.println("Bin production run tipped id is null");
         }
         else
-            System.out.println("Bin number is null or empty");
+          //  System.out.println("Bin number is null or empty");
 
 
         this.carton_num = ProductLabelingDAO.getNextMesObjectId(ProductLabelingDAO.MesObjectTypes.CARTON);
@@ -595,7 +595,10 @@ public class CartonLabelScan extends ProductLabelScan
         carton_template.setDate_time_created(new java.sql.Timestamp(new java.util.Date().getTime()));
 
         //System.out.print("about to call create carton");
-        ProductLabelingDAO.createCarton(carton_template);
+        ProductLabelingDAO.createCarton(carton_template,bin);
+        DataSource.getSqlMapInstance().commitTransaction();
+        ProductLabelingDAO.updateRunStats(carton_template,null,null,null);
+        DataSource.getSqlMapInstance().commitTransaction();
         //System.out.print("carton created");
 
 //                        if(this.schedule_order_details!=null)
@@ -605,11 +608,12 @@ public class CartonLabelScan extends ProductLabelScan
 //
 
         //TODO uncomment for live!
-        this.getPltransaction().set_do_db_transactio(true);
+        this.getPltransaction().set_do_db_transactio(false);
 
         //System.out.println("exit label data");
         //TODO: comment out for live!!
         // DataSource.getSqlMapInstance().commitTransaction();
+
 
 
         //} catch (Exception ex)

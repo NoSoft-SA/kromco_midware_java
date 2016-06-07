@@ -437,15 +437,45 @@ public class ProductLabelingDAO
               DataSource.getSqlMapInstance().update("updateCartonStats",new_carton);
 	      //DataSource.getSqlMapInstance().update("addCartonWeight",new_carton);
         }
+
+
+
+	public static void logBinNotTippedErrIfNeeded(Carton carton,Bin bin) throws Exception
+	{
+
+       if(bin != null && bin.getProduction_run_tipped_id() == null)
+	   {
+		   MidwareErrorLogEntry error = new MidwareErrorLogEntry();
+		   int err_code = 9;
+
+		   error.setError_code(err_code);
+		   //error.setDevice_ip(ip);
+		   error.setError_date_time(new java.sql.Timestamp(new java.util.Date().getTime()));
+		   error.setProduction_run_code(carton.getProduction_run_code());
+		   error.setError_description("DP CARTON'S BIN NOT TIPPED: Carton: " + carton.getCarton_number().toString() + "; BIN: " + bin.getBin_id().toString());
+		   error.setMw_type("DP_CARTON_LABELING");
+		   error.setShort_description(bin.getBin_id());
+		   error.setObject_id(carton.getBin_id().toString());
+		   DataSource.getSqlMapInstance().insert("logMidwareError", error);;
+
+	   }
+
+
+
+	}
+
+
         
         
-	public static void createCarton(Carton new_carton) throws Exception
+	public static void createCarton(Carton new_carton,Bin bin) throws Exception
 	{
 		//try
 		//{
+
+		//logBinNotTippedErrIfNeeded(new_carton,bin);
 			
 			DataSource.getSqlMapInstance().insert("createCarton",new_carton);
-                        updateRunStats(new_carton,null,null,null);
+                      //  updateRunStats(new_carton,null,null,null);
                         //updateCartonRunStats(new_carton);
                        // DataSource.getSqlMapInstance().update("incrementCartonsPrinted",new_carton);
 		       //DataSource.getSqlMapInstance().update("addCartonWeight",new_carton);
