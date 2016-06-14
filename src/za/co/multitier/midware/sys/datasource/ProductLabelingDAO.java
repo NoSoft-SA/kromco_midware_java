@@ -10,7 +10,9 @@
 package za.co.multitier.midware.sys.datasource;
 
 import com.mindprod.common11.BigDate;
-import java.sql.SQLException; 
+import za.co.multitier.midware.sys.appservices.MidwareConfig;
+
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -343,8 +345,23 @@ public class ProductLabelingDAO
 	
 	
 	public synchronized static Long getNextMesObjectId(MesObjectTypes object_type) throws Exception
+
 	{
-		MesControlFile ctl = (MesControlFile) DataSource.getSqlMapInstance().queryForObject("getMesCtlSequence", object_type.ordinal());
+		Integer final_object_type = null;
+
+		if(object_type == MesObjectTypes.CARTON)
+		{
+			String carton_otype =  MidwareConfig.getInstance().getSettings().getProperty("carton_number_object_type");
+			if(carton_otype != null)
+			{
+				final_object_type = Integer.parseInt(carton_otype);
+			}
+		}
+
+	    if(final_object_type == null)
+			final_object_type = object_type.ordinal();
+
+		MesControlFile ctl = (MesControlFile) DataSource.getSqlMapInstance().queryForObject("getMesCtlSequence", final_object_type);
 		ctl.setSequence_number(ctl.getSequence_number()+1);
 		DataSource.getSqlMapInstance().update("setMesCtlSequence",ctl);
 		return ctl.getSequence_number();

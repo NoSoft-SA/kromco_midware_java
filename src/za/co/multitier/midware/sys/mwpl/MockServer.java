@@ -35,7 +35,7 @@ public class MockServer {
     public static void main(String[] args) {
 
         String ip = "172.16.35.203";
-        String bin_num = "50169636";
+        String bin_num = "50431515";
 
 
         Scanner in = new Scanner(System.in);

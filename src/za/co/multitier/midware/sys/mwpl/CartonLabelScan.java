@@ -133,16 +133,12 @@ public class CartonLabelScan extends ProductLabelScan
                     //TODO uncomment for live
                     throw new Exception("Carton has different run to bin" + "(carton:" + run.getProduction_run_code() + "; bin: " + tip_run.getProduction_run_code() + ")");
                 }
-                else
-                {
-                   // System.out.println("Bin and cartons has same run");
-                }
+
             }
-            else
-              ;//  System.out.println("Bin production run tipped id is null");
+
         }
-        else
-          //  System.out.println("Bin number is null or empty");
+
+
 
 
         this.carton_num = ProductLabelingDAO.getNextMesObjectId(ProductLabelingDAO.MesObjectTypes.CARTON);
