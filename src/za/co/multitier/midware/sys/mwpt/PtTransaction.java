@@ -200,8 +200,9 @@ public class PtTransaction
                         break;
                 }
 
-
-                resultStr = new PalletizingAction(msg).process_action(destinationIP,bay,button_pressed,scanCode);
+                if(transaction_executed == true) {
+                    resultStr = new PalletizingAction(msg).process_action(destinationIP, bay, button_pressed, scanCode);
+                }
 
                 //System.out.println(resultStr);
 
@@ -212,10 +213,11 @@ public class PtTransaction
         } finally {//HZ addition
             trData.addRecordToReturnData(resultStr);
             try {
-                
-                za.co.multitier.midware.sys.datasource.DataSource.getSqlMapInstance().endTransaction();
-                if(transaction_executed == true)
-                    MidwareCache.getDevicesCache().transactionDone(destinationIP,bay);
+                if(transaction_executed == true) {
+                    za.co.multitier.midware.sys.datasource.DataSource.getSqlMapInstance().endTransaction();
+
+                    MidwareCache.getDevicesCache().transactionDone(destinationIP, bay);
+                }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
