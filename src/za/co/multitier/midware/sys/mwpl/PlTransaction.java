@@ -274,7 +274,6 @@ public class PlTransaction {
                     } else
 					{
                         this.set_do_db_transactio(false);
-                        rebin_trans_executed = false;
                         resultStr = SysProtocol.TMSG + "Status=\"true\" Red=\"true\" Yellow=\"false\" Green=\"false\" Msg=\"Transaction busy. PLease wait...\" LCD1=\"\" LCD2=\"\" />";
 
                     }
@@ -305,7 +304,7 @@ public class PlTransaction {
                     else
                     {
                         this.set_do_db_transactio(false);
-                        rebin_trans_executed = false;
+
                         resultStr = SysProtocol.TMSG + "Status=\"true\" Red=\"true\" Yellow=\"false\" Green=\"false\" Msg=\"Transaction busy. PLease wait...\" LCD1=\"\" LCD2=\"\" />";
 
                     }
