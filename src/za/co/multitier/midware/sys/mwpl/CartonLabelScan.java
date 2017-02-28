@@ -16,6 +16,7 @@ import java.util.Map;
 import za.co.multitier.mesware.services.email.MailInterface;
 import za.co.multitier.mesware.messages.MessageInterface;
 import za.co.multitier.midware.sys.appservices.DeviceScan;
+import za.co.multitier.midware.sys.appservices.MidwareCache;
 import za.co.multitier.midware.sys.appservices.MidwareConfig;
 import za.co.multitier.midware.sys.datasource.*;
 
@@ -593,7 +594,11 @@ public class CartonLabelScan extends ProductLabelScan
         //System.out.print("about to call create carton");
         ProductLabelingDAO.createCarton(carton_template,bin);
         DataSource.getSqlMapInstance().commitTransaction();
-        ProductLabelingDAO.updateRunStats(carton_template,null,null,null);
+
+        MidwareCache.getDevicesCache().labelTransactionDone(this.codeCollection[0]);
+
+
+                ProductLabelingDAO.updateRunStats(carton_template, null, null, null);
         DataSource.getSqlMapInstance().commitTransaction();
         //System.out.print("carton created");
 

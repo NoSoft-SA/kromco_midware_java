@@ -295,11 +295,20 @@ public class PlTransaction {
                     //System.out.println("CARTON LABEL INPUT: Mode: " + trData.mode + " IP: " + trData.destAddr + " Bin: " + trData.binNumber + " Scan1: " + scancode1 + " Scan2: " + scancode2);
                     msg.sysMsg("CARTON LABEL INPUT: Mode: " + trData.mode + " IP: " + trData.destAddr+ " Bin: " + trData.binNumber + " Scan1: " + scancode1 + " Scan2: " + scancode2 );
 
+                    if (MidwareCache.getDevicesCache().otherBusyLabelTransaction(scancode1) == false) {
 
-                    this.labeling_scan = new CartonLabelScan(trData.destAddr, mass, codeCollection, msg, this.mail, order_qty_from_address, order_qty_to_address,bin_num);
-                    this.labeling_scan.set_transaction(this);
+                        this.labeling_scan = new CartonLabelScan(trData.destAddr, mass, codeCollection, msg, this.mail, order_qty_from_address, order_qty_to_address, bin_num);
+                        this.labeling_scan.set_transaction(this);
 
-                    resultStr = labeling_scan.processLabelScan();
+                        resultStr = labeling_scan.processLabelScan();
+                    }
+                    else
+                    {
+                        this.set_do_db_transactio(false);
+                        rebin_trans_executed = false;
+                        resultStr = SysProtocol.TMSG + "Status=\"true\" Red=\"true\" Yellow=\"false\" Green=\"false\" Msg=\"Transaction busy. PLease wait...\" LCD1=\"\" LCD2=\"\" />";
+
+                    }
 
                     break;
 

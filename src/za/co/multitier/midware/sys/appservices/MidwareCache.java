@@ -21,6 +21,7 @@ public class MidwareCache
 	private HashMap palletizing_long_transaction_store;
         private HashMap palletizing_transaction_store;
         private HashMap rebin_transaction_store;
+        private HashMap label_transaction_store;
         
 	private static final MidwareCache instance;
 	
@@ -37,9 +38,39 @@ public class MidwareCache
 		palletizing_long_transaction_store = new HashMap();
                 palletizing_transaction_store = new HashMap();
 		rebin_transaction_store = new HashMap();
+        label_transaction_store = new HashMap();
+
 	}
         
-        
+
+    //CTN LABELING
+    public synchronized boolean otherBusyLabelTransaction(String station_code) throws Exception
+    {
+
+        String key = station_code;
+        if(label_transaction_store.get(key)== null)
+        {
+            synchronized(label_transaction_store)
+            {
+                label_transaction_store.put(key,true);
+            }
+            return false;
+        }
+        else
+            return true;
+    }
+
+    public synchronized void labelTransactionDone(String station_code) throws Exception
+    {
+        String key = station_code;
+
+        synchronized(label_transaction_store)
+        {
+            label_transaction_store.remove(key);
+        }
+    }
+
+
         
         //==========
         //REBINNING
