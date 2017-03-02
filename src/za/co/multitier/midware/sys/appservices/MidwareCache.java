@@ -64,9 +64,11 @@ public class MidwareCache
     {
         String key = station_code;
 
+
         synchronized(label_transaction_store)
         {
-            label_transaction_store.remove(key);
+            if(label_transaction_store.containsKey(station_code))
+             label_transaction_store.remove(key);
         }
     }
 

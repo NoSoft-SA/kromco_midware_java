@@ -595,10 +595,10 @@ public class CartonLabelScan extends ProductLabelScan
         ProductLabelingDAO.createCarton(carton_template,bin);
         DataSource.getSqlMapInstance().commitTransaction();
 
-        MidwareCache.getDevicesCache().labelTransactionDone(this.codeCollection[0]);
+        //MidwareCache.getDevicesCache().labelTransactionDone(this.codeCollection[0]);
 
 
-                ProductLabelingDAO.updateRunStats(carton_template, null, null, null);
+             //   ProductLabelingDAO.updateRunStats(carton_template, null, null, null);
         DataSource.getSqlMapInstance().commitTransaction();
         //System.out.print("carton created");
 

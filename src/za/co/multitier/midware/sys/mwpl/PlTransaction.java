@@ -389,13 +389,17 @@ public class PlTransaction {
 
         } catch (Exception ex) {
             System.out.println("unexpected exception: " + ex);
+
             if (resultStr.equals(""))
 			{
                 resultStr = SysProtocol.TMSG + "Status=\"false\" Red=\"true\" Yellow=\"false\" Green=\"false\" Msg=\"" + ex.toString() + "\" />";
+
             }
 
         } finally {
             //System.out.println("finally clause reached...");
+
+
             trData.addRecordToReturnData(resultStr);
             //System.out.println("FINALLY: " + resultStr);
 
@@ -404,8 +408,9 @@ public class PlTransaction {
             try {
 
 
-
+                MidwareCache.getDevicesCache().labelTransactionDone(scancode1);
                 LogEndTransaction(destinationIP, scancode1, scancode2, resultStr);
+
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
