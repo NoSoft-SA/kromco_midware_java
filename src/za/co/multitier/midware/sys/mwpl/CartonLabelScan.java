@@ -181,7 +181,11 @@ public class CartonLabelScan extends ProductLabelScan
         data.put("F2", str_num);
 
 
-        data.put("F3", label_setup.getVariety_short_long());
+        String variety = label_setup.getVariety_short_long();
+        String lbl_variety = "(" + variety.substring(0,3) + ")" +  variety.substring(3,variety.length());
+
+
+        data.put("F3", lbl_variety);
         data.put("F4", label_setup.getCommodity_code());
         data.put("F5", label_setup.getCommodity_description());
         data.put("F6", label_setup.getBrand_code());
