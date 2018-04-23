@@ -68,7 +68,7 @@ public class CartonLabelScan extends ProductLabelScan
         //try
         //{
 
-
+    
         if (this.bin_number != null && this.bin_number != "")
         {
             bin = BinTippingDAO.getBin(this.bin_number);
@@ -254,7 +254,10 @@ public class CartonLabelScan extends ProductLabelScan
             //for DP cartons, use pc-code defined on run itself
             if (bin != null)
             {
-                if (bin.getOrchard_code() != null && (carton_template.getTarget_market_code().substring(0, 2).equals("NI")||carton_template.getTarget_market_code().substring(0, 2).equals("FE")))
+                if (bin.getOrchard_code() != null &&
+                                (carton_template.getTarget_market_code().substring(0, 2).equals("NI")||
+                                carton_template.getTarget_market_code().substring(0, 2).equals("P6")||
+                                carton_template.getTarget_market_code().substring(0, 2).equals("FE")))
                 {
                     data.put("F32", "ORCHARD");
                     data.put("F33", bin.getOrchard_code());
@@ -597,10 +600,11 @@ public class CartonLabelScan extends ProductLabelScan
 
         //System.out.print("about to call create carton");
         ProductLabelingDAO.createCarton(carton_template,bin);
-        DataSource.getSqlMapInstance().commitTransaction();
+        //DataSource.getSqlMapInstance().commitTransaction();
 
         //MidwareCache.getDevicesCache().labelTransactionDone(this.codeCollection[0]);
-
+        //TODO uncomment for live!
+        this.getPltransaction().set_do_db_transactio(false);
 
              //   ProductLabelingDAO.updateRunStats(carton_template, null, null, null);
         DataSource.getSqlMapInstance().commitTransaction();
@@ -612,8 +616,7 @@ public class CartonLabelScan extends ProductLabelScan
 //                            ProductLabelingDAO.updateSeasonOrderQty(new_qty,(Integer)schedule_order_details.get("id"));
 //
 
-        //TODO uncomment for live!
-        this.getPltransaction().set_do_db_transactio(false);
+
 
         //System.out.println("exit label data");
         //TODO: comment out for live!!
