@@ -457,7 +457,7 @@ public class PalletisingDAO {
 
     public static void updatePalletRunStats(Pallet pallet) throws Exception {
 
-        DataSource.getSqlMapInstance().update("incrementPalletsCompleted", pallet);
+        DataSource.getSqlMapInstance().insert("incrementPalletsCompleted", pallet);
     }
 
 

@@ -451,7 +451,7 @@ public class ProductLabelingDAO
             //Method created to overcome deadlock problem when multiple labeling instances tries to
             //update the production_runs record
             //--------------------------------------------------------------
-              DataSource.getSqlMapInstance().update("updateCartonStats",new_carton);
+              DataSource.getSqlMapInstance().insert("updateCartonStats",new_carton);
 	      //DataSource.getSqlMapInstance().update("addCartonWeight",new_carton);
         }
 
@@ -518,7 +518,7 @@ public class ProductLabelingDAO
         
 	public static void updateRebinRunStats(Rebin new_rebin) throws Exception
         {
-              DataSource.getSqlMapInstance().update("updateRebinStats",new_rebin);
+              DataSource.getSqlMapInstance().insert("updateRebinStats",new_rebin);
 	      //DataSource.getSqlMapInstance().update("addRebinWeight",new_rebin);
         }
         

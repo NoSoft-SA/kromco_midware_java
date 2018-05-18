@@ -294,7 +294,7 @@ public class BinTippingDAO {
 
         }
 
-        DataSource.getSqlMapInstance().update("updateBinsTippedStats", bin);
+        DataSource.getSqlMapInstance().insert("updateBinsTippedStats", bin);
 
         //DataSource.getSqlMapInstance().update("addBinWeight",bin);
 
@@ -353,7 +353,7 @@ public class BinTippingDAO {
         try {
             DataSource.getSqlMapInstance().startTransaction();
             BinTippingDAO.createInvalidBin(bin);
-            DataSource.getSqlMapInstance().update("incrementBinsTipped", bin);
+            DataSource.getSqlMapInstance().insert("incrementBinsTipped", bin);
             //TO DO: CREATE POSTBOX RECORD
             //TO DO: CREATE BIN ERROR LOG RECORD
             DataSource.getSqlMapInstance().commitTransaction();
