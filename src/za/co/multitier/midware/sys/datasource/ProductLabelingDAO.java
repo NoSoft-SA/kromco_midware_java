@@ -493,7 +493,7 @@ public class ProductLabelingDAO
 			
 			DataSource.getSqlMapInstance().insert("createCarton",new_carton);
                       //  updateRunStats(new_carton,null,null,null);
-                        //updateCartonRunStats(new_carton);
+                        updateCartonRunStats(new_carton);
                        // DataSource.getSqlMapInstance().update("incrementCartonsPrinted",new_carton);
 		       //DataSource.getSqlMapInstance().update("addCartonWeight",new_carton);
 			
