@@ -315,7 +315,7 @@ public class CartonLabelScan extends ProductLabelScan
         data.put("F13", carton_template.getPuc());
 //			data.put("F14",label_setup.getCold_store_code());
         data.put("F14", egap);
-        data.put("F15", label_setup.getTarget_market_code());
+        data.put("F15", label_setup.getTarget_market_code().substring(0, 2));
         data.put("F16", label_setup.getClass_code());
         String marking = label_setup.getMarking() == null || label_setup.getMarking() == "*" ? "" : label_setup.getMarking();
         data.put("F17", marking);
