@@ -23,24 +23,20 @@ import za.co.multitier.midware.sys.datasource.*;
 /**
  * @author Administrator
  */
-public class CartonLabelScan extends ProductLabelScan
-{
+public class CartonLabelScan extends ProductLabelScan {
 
     /**
      * Creates a new instance of CartonLabelScan
      */
-    public CartonLabelScan(String ip, String mass, String codeCollection[], MessageInterface msg, String bin_num)
-    {
+    public CartonLabelScan(String ip, String mass, String codeCollection[], MessageInterface msg, String bin_num) {
         super(ip, mass, codeCollection, msg, bin_num);
     }
 
-    public CartonLabelScan(String ip, String mass, String codeCollection[], String bin_num)
-    {
+    public CartonLabelScan(String ip, String mass, String codeCollection[], String bin_num) {
         super(ip, mass, codeCollection, bin_num);
     }
 
-    public CartonLabelScan(String ip, String mass, String codeCollection[], MessageInterface msg, MailInterface mail, String from, String to, String bin_num)
-    {
+    public CartonLabelScan(String ip, String mass, String codeCollection[], MessageInterface msg, MailInterface mail, String from, String to, String bin_num) {
         this(ip, mass, codeCollection, msg, bin_num);
         mailer = mail;
         from_address = from;
@@ -63,14 +59,12 @@ public class CartonLabelScan extends ProductLabelScan
     String pick_ref;
     String iso_week;
 
-    protected void setLabelData() throws Exception
-    {
+    protected void setLabelData() throws Exception {
         //try
         //{
 
-    
-        if (this.bin_number != null && this.bin_number != "")
-        {
+
+        if (this.bin_number != null && this.bin_number != "") {
             bin = BinTippingDAO.getBin(this.bin_number);
             if (bin == null)
                 throw new Exception("Bin: " + this.bin_number + " does not exist");
@@ -79,28 +73,24 @@ public class CartonLabelScan extends ProductLabelScan
 
         this.template_name = "E2";
         carton_link = ProductLabelingDAO.getCartonLink(this.codeCollection[0], this.active_device.getProduction_run_id());
-        if (carton_link == null)
-        {
+        if (carton_link == null) {
             throw new Exception("No carton link was found for station code: " + codeCollection[0]);
 
 
         }
-        if (carton_link.getRebin_label_setup_id() != null)
-        {
+        if (carton_link.getRebin_label_setup_id() != null) {
             this.label_message = "REBIN PRODUCT";
             return;
         }
 
         label_setup = ProductLabelingDAO.getCartonLabelSetup(carton_link.getCarton_label_setup_id());
-        if (label_setup == null)
-        {
+        if (label_setup == null) {
             throw new Exception("No carton label setup was found for station code: " + codeCollection[0]);
 
 
         }
         carton_template = ProductLabelingDAO.getCartonTemplate(carton_link.getCarton_template_id());
-        if (carton_template == null)
-        {
+        if (carton_template == null) {
             throw new Exception("No carton template was found for station code: " + codeCollection[0]);
 
         }
@@ -109,28 +99,24 @@ public class CartonLabelScan extends ProductLabelScan
         carton_template.calc_gtin();
 
         run = ProductLabelingDAO.getProductionRun(carton_link.getProduction_run_id());
-        if (run == null)
-        {
+        if (run == null) {
             throw new Exception("Production run with id: " + String.valueOf(carton_link.getProduction_run_id()) + " does not exist.");
 
 
         }
 
 
-        if (this.bin_number != null && this.bin_number != "")
-        {
-          //  System.out.println("Bin number is: " + this.bin_number);
-            if (bin.getProduction_run_tipped_id() != null)
-            {
+        if (this.bin_number != null && this.bin_number != "") {
+            //  System.out.println("Bin number is: " + this.bin_number);
+            if (bin.getProduction_run_tipped_id() != null) {
 
-               // System.out.println("Bin production run tipped id is: " + String.valueOf(bin.getProduction_run_tipped_id()));
-               // System.out.println("Carton production run_id is: " + String.valueOf(run.getId()));
+                // System.out.println("Bin production run tipped id is: " + String.valueOf(bin.getProduction_run_tipped_id()));
+                // System.out.println("Carton production run_id is: " + String.valueOf(run.getId()));
 
                 ProductionRun tip_run = ProductLabelingDAO.getProductionRun(bin.getProduction_run_tipped_id());
 
-                if (!tip_run.getProduction_run_code().equals(run.getProduction_run_code()))
-                {
-                  //  System.out.println("Carton has different run to bin" + "(carton:" + run.getProduction_run_code() + "; bin: " + tip_run.getProduction_run_code() + ")");
+                if (!tip_run.getProduction_run_code().equals(run.getProduction_run_code())) {
+                    //  System.out.println("Carton has different run to bin" + "(carton:" + run.getProduction_run_code() + "; bin: " + tip_run.getProduction_run_code() + ")");
                     //TODO uncomment for live
                     throw new Exception("Carton has different run to bin" + "(carton:" + run.getProduction_run_code() + "; bin: " + tip_run.getProduction_run_code() + ")");
                 }
@@ -138,8 +124,6 @@ public class CartonLabelScan extends ProductLabelScan
             }
 
         }
-
-
 
 
         this.carton_num = ProductLabelingDAO.getNextMesObjectId(ProductLabelingDAO.MesObjectTypes.CARTON);
@@ -157,8 +141,7 @@ public class CartonLabelScan extends ProductLabelScan
         String str_num = DeviceScan.pad_number(this.carton_num, required_num_length);
         //this.midware_console.sysMsg("number is: " + str_num);
         String gtin = carton_template.getGtin();
-        if (gtin == null)
-        {
+        if (gtin == null) {
             gtin = "";
 
 
@@ -170,9 +153,7 @@ public class CartonLabelScan extends ProductLabelScan
         {
             gtin_barcode = "^01" + gtin + "10" + run.getBatch_code();
 
-        }
-        else
-        {
+        } else {
             gtin_barcode = "0110" + run.getBatch_code();
 
 
@@ -182,7 +163,7 @@ public class CartonLabelScan extends ProductLabelScan
 
 
         String variety = label_setup.getVariety_short_long();
-        String lbl_variety = "(" + variety.substring(0,3) + ")" +  variety.substring(3,variety.length());
+        String lbl_variety = "(" + variety.substring(0, 3) + ")" + variety.substring(3, variety.length());
 
 
         data.put("F3", lbl_variety);
@@ -193,19 +174,13 @@ public class CartonLabelScan extends ProductLabelScan
 
         boolean print_count = false;
         String ru_type = ProductLabelingDAO.getRUType(label_setup.getCarton_setup_id());
-        if (ru_type != null)
-        {
-            if (ru_type.equals("T"))
-            {
+        if (ru_type != null) {
+            if (ru_type.equals("T")) {
                 print_count = true;
-            }
-            else
-            {
+            } else {
                 print_count = false;
             }
-        }
-        else
-        {
+        } else {
             print_count = false;
 
 
@@ -220,19 +195,16 @@ public class CartonLabelScan extends ProductLabelScan
         boolean orchard_printed = false;
 
 
-        try
-        {
+        try {
             //Pick ref, bit tricky
             pick_ref = "";
 
             iso_week = ProductLabelingDAO.getCurrentIsoWeek();
-            if (iso_week == null)
-            {
+            if (iso_week == null) {
                 throw new Exception("iso week does not exist for today's date(" + new java.sql.Date(new java.util.Date().getTime()) + ")");
 
             }
-            if (iso_week.length() == 1)
-            {
+            if (iso_week.length() == 1) {
                 iso_week = "0" + iso_week;
 
                 //get wekday
@@ -252,13 +224,12 @@ public class CartonLabelScan extends ProductLabelScan
 
             //
             //for DP cartons, use pc-code defined on run itself
-            if (bin != null)
-            {
+            if (bin != null) {
                 if (bin.getOrchard_code() != null &&
-                                (carton_template.getTarget_market_code().substring(0, 2).equals("NI")||
-                                carton_template.getTarget_market_code().substring(0, 2).equals("P6")||
-                                carton_template.getTarget_market_code().substring(0, 2).equals("FE")))
-                {
+                        (carton_template.getTarget_market_code().substring(0, 2).equals("NI") ||
+                                carton_template.getTarget_market_code().substring(0, 2).equals("P6") || carton_template.getTarget_market_code().substring(0, 2).equals("RS") ||
+                                carton_template.getTarget_market_code().substring(0, 2).equals("ME") ||
+                                carton_template.getTarget_market_code().substring(0, 2).equals("FE"))) {
                     data.put("F32", "ORCHARD");
                     data.put("F33", bin.getOrchard_code());
                     orchard_printed = true;
@@ -267,8 +238,7 @@ public class CartonLabelScan extends ProductLabelScan
 
                 //"44DP44"
                 String pack_point_end_chars = this.active_device.getActive_device_code().substring(this.active_device.getActive_device_code().length() - 2);
-                if (isNumeric(pack_point_end_chars) && Integer.valueOf(pack_point_end_chars) > 40 && Integer.valueOf(pack_point_end_chars) < 46)
-                {
+                if (isNumeric(pack_point_end_chars) && Integer.valueOf(pack_point_end_chars) > 40 && Integer.valueOf(pack_point_end_chars) < 46) {
                     pc_code = bin.getPc_code();
                     pc_code_num = bin.getPc_code_num();
 
@@ -289,8 +259,7 @@ public class CartonLabelScan extends ProductLabelScan
             //pick_ref = iso_week + carton_template.getPc_code_num() + iso_week.substring(1,2);
             pick_ref = iso_week.substring(1, 2) + String.valueOf(weekday) + pc_code_pick + iso_week.substring(0, 1);
             data.put("F12", pick_ref);
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             throw new Exception("Pick reference could not be calculated. Reported Exception: " + ex.toString());
         }
 
@@ -306,8 +275,7 @@ public class CartonLabelScan extends ProductLabelScan
 
         //get nature's choice certificate code'
         String egap = "";
-        if (puc.getEurogap_code() != null)
-        {
+        if (puc.getEurogap_code() != null) {
             egap = puc.getEurogap_code();
 
 
@@ -330,13 +298,11 @@ public class CartonLabelScan extends ProductLabelScan
         if (this.codeCollection[1].trim().equals(""))
             throw new Exception("group id or packer is null");
 
-        if (this.bin == null)
-        {
+        if (this.bin == null) {
 
 
             this.packer = this.codeCollection[1].substring(2, 7);
-        }
-        else
+        } else
             this.packer = this.codeCollection[1];
 
 
@@ -346,9 +312,7 @@ public class CartonLabelScan extends ProductLabelScan
         {
             gtin_readable = "(01)" + gtin + "(10)" + run.getBatch_code();
 
-        }
-        else
-        {
+        } else {
             gtin_readable = "(01)(10)" + run.getBatch_code();
 
 
@@ -358,12 +322,9 @@ public class CartonLabelScan extends ProductLabelScan
         data.put("F24", label_setup.getOrganization_address_2());
 
 
-        if (print_count == true)
-        {
+        if (print_count == true) {
             data.put("F25", "COUNT:");
-        }
-        else
-        {
+        } else {
             data.put("F25", "");
         }
 
@@ -371,14 +332,12 @@ public class CartonLabelScan extends ProductLabelScan
 
         String diameter_heading = "";
 
-        if (label_setup.getDiameter() != null && !label_setup.getDiameter().equals("*") && !label_setup.getDiameter().trim().equals(""))
-        {
+        if (label_setup.getDiameter() != null && !label_setup.getDiameter().equals("*") && !label_setup.getDiameter().trim().equals("")) {
             diameter_heading = "DIAMETER/WEIGHT";
 
 
         }
-        if (!marking.equals("*") && !marking.trim().equals(""))
-        {
+        if (!marking.equals("*") && !marking.trim().equals("")) {
             marking_heading = "MARKING";
 
 
@@ -387,8 +346,7 @@ public class CartonLabelScan extends ProductLabelScan
         data.put("F27", marking_heading);
 
         String ntc = "";
-        if (puc.getNature_choice_certificate_code() != null)
-        {
+        if (puc.getNature_choice_certificate_code() != null) {
             ntc = puc.getNature_choice_certificate_code();
 
         }
@@ -396,45 +354,35 @@ public class CartonLabelScan extends ProductLabelScan
         //Little automation of task to print the digits of carton number to different field from F25 to F36
         data.put("F29", carton_template.getExtended_fg_code());
         String pfp = "";
-        if (label_setup.getPallet_format_product_code() != null)
-        {
+        if (label_setup.getPallet_format_product_code() != null) {
             pfp = label_setup.getPallet_format_product_code();
 
         }
         data.put("F30", pfp);
         String sell_by = carton_template.getSell_by_code();
-        if (sell_by != null && !sell_by.equals("-"))
-        {
+        if (sell_by != null && !sell_by.equals("-")) {
             data.put("F31", sell_by);
 
-        }
-        else
-        {
+        } else {
             data.put("F31", "");
-
-
-
 
 
         }
 
 
         //print empty lines for 32 & 33 if orchard, according to printing rule, was not printed. This is so that lines 34 onwards can be used
-        if(!orchard_printed)
-        {
-            data.put("F32","");
-            data.put("F33","");
+        if (!orchard_printed) {
+            data.put("F32", "");
+            data.put("F33", "");
         }
 
 
-        String mass_printing_tms_text =  MidwareConfig.getInstance().getSettings().getProperty("tms_to_print_tu_mass");
+        String mass_printing_tms_text = MidwareConfig.getInstance().getSettings().getProperty("tms_to_print_tu_mass");
 
-        if(mass_printing_tms_text != null)
-        {
-            String [] mass_printing_tms =    mass_printing_tms_text.split(",");
+        if (mass_printing_tms_text != null) {
+            String[] mass_printing_tms = mass_printing_tms_text.split(",");
 
-            if (tm_in_list(carton_template.getTarget_market_code().split("_")[0], mass_printing_tms))
-            {
+            if (tm_in_list(carton_template.getTarget_market_code().split("_")[0], mass_printing_tms)) {
 
                 String cpc_mass = "";
                 if (carton_template.getCpc_tu_mass() != null)
@@ -447,16 +395,12 @@ public class CartonLabelScan extends ProductLabelScan
         }
 
 
-
-
-
     }
 
 
-    private  boolean tm_in_list(String tm,String[] tm_list)
-    {
-        for(int i=0; i< tm_list.length; i++){
-            if(tm_list[i].equals(tm))
+    private boolean tm_in_list(String tm, String[] tm_list) {
+        for (int i = 0; i < tm_list.length; i++) {
+            if (tm_list[i].equals(tm))
                 return true;
         }
 
@@ -464,27 +408,22 @@ public class CartonLabelScan extends ProductLabelScan
     }
 
 
-    private PUC set_puc_account_pre_sort() throws Exception
-    {
+    private PUC set_puc_account_pre_sort() throws Exception {
         Account account = null;
         PUC puc = null;
 
         carton_template.setFarm_code(bin.getFarm_code());
         account = ProductLabelingDAO.getMarketerAccountCodeForFarm(bin.getFarm_code(), carton_template.getOrganization_code());
-        if (account != null)
-        {
+        if (account != null) {
             carton_template.setAccount_code(account.getAccount_code());
             carton_template.setPuc(account.getPuc_code());
             puc = ProductLabelingDAO.getPUC(carton_template.getPuc());
-            if (puc == null)
-            {
+            if (puc == null) {
                 throw new Exception("PUC does not exist for farm: " + run.getFarm_code() + " and  marketing org: " + carton_template.getOrganization_code());
 
             }
             carton_template.setEgap(puc.getEurogap_code());
-        }
-        else
-        {
+        } else {
             throw new Exception("Farm_puc_account record could not be looked up for farm: " + run.getFarm_code() + " and  marketing org: " + carton_template.getOrganization_code());
 
 
@@ -493,28 +432,22 @@ public class CartonLabelScan extends ProductLabelScan
         return puc;
     }
 
-    private PUC set_puc_account_normal() throws Exception
-    {
+    private PUC set_puc_account_normal() throws Exception {
         Account account = null;
         PUC puc = null;
-        if (run.getFarm_code() != null)
-        {
+        if (run.getFarm_code() != null) {
             carton_template.setFarm_code(run.getFarm_code());
             account = ProductLabelingDAO.getMarketerAccountCodeForFarm(run.getFarm_code(), carton_template.getOrganization_code());
-            if (account != null)
-            {
+            if (account != null) {
                 carton_template.setAccount_code(account.getAccount_code());
                 carton_template.setPuc(account.getPuc_code());
                 puc = ProductLabelingDAO.getPUC(carton_template.getPuc());
-                if (puc == null)
-                {
+                if (puc == null) {
                     throw new Exception("PUC does not exist for farm: " + run.getFarm_code() + " and  marketing org: " + carton_template.getOrganization_code());
 
                 }
                 carton_template.setEgap(puc.getEurogap_code());
-            }
-            else
-            {
+            } else {
                 throw new Exception("Farm_puc_account record could not be looked up for farm: " + run.getFarm_code() + " and  marketing org: " + carton_template.getOrganization_code());
 
 
@@ -530,13 +463,11 @@ public class CartonLabelScan extends ProductLabelScan
     //3) update mes_ctl_sequence
     //=================================================================
     //
-    public void send_integration_record() throws Exception
-    {
+    public void send_integration_record() throws Exception {
 
     }
 
-    protected void post_labeling_transaction() throws Exception
-    {
+    protected void post_labeling_transaction() throws Exception {
         //try
         //{
         // System.out.println("in post label data");
@@ -545,16 +476,14 @@ public class CartonLabelScan extends ProductLabelScan
         carton_template.setCarton_number(this.carton_num);
         carton_template.setCarton_label_station_code(this.ip);
 
-        if (this.bin == null)
-        {
+        if (this.bin == null) {
             String erp_station = this.codeCollection[0].substring(0, 3);
             carton_template.setErp_station(erp_station);
             String erp_pack_point = this.codeCollection[0].substring(3, 5);
             carton_template.setErp_pack_point(erp_pack_point);
             carton_template.setCarton_pack_station_code(this.codeCollection[0]);
             carton_template.setPacker_number(this.codeCollection[1]);
-        }
-        else
+        } else
             carton_template.setPacker_number(this.codeCollection[1]);
 
         carton_template.setCarton_pack_station_code(this.active_device.getActive_device_code());
@@ -566,17 +495,14 @@ public class CartonLabelScan extends ProductLabelScan
         carton_template.setProduction_run_id(run.getId());
         carton_template.setPack_date_time(new java.sql.Timestamp(new java.util.Date().getTime()));
 
-        try
-        {
+        try {
             double real_mass = Double.parseDouble(this.mass);
 
-            if (real_mass > 0.00)
-            {
+            if (real_mass > 0.00) {
                 carton_template.setCarton_fruit_nett_mass(real_mass);
 
             }
-        } finally
-        {
+        } finally {
         }
 
         carton_template.setLine_code(run.getLine_code());
@@ -599,14 +525,14 @@ public class CartonLabelScan extends ProductLabelScan
         carton_template.setDate_time_created(new java.sql.Timestamp(new java.util.Date().getTime()));
 
         //System.out.print("about to call create carton");
-        ProductLabelingDAO.createCarton(carton_template,bin);
+        ProductLabelingDAO.createCarton(carton_template, bin);
         //DataSource.getSqlMapInstance().commitTransaction();
 
         //MidwareCache.getDevicesCache().labelTransactionDone(this.codeCollection[0]);
         //TODO uncomment for live!
         this.getPltransaction().set_do_db_transactio(false);
 
-             //   ProductLabelingDAO.updateRunStats(carton_template, null, null, null);
+        //   ProductLabelingDAO.updateRunStats(carton_template, null, null, null);
         DataSource.getSqlMapInstance().commitTransaction();
         //System.out.print("carton created");
 
@@ -617,11 +543,9 @@ public class CartonLabelScan extends ProductLabelScan
 //
 
 
-
         //System.out.println("exit label data");
         //TODO: comment out for live!!
         // DataSource.getSqlMapInstance().commitTransaction();
-
 
 
         //} catch (Exception ex)
