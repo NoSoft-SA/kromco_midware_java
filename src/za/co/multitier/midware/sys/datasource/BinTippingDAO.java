@@ -35,6 +35,21 @@ public class BinTippingDAO {
 
     }
 
+    public static Integer getVehicleJobForBin(String bin_number) throws Exception {
+        try {
+
+            //HashMap params = new HashMap();
+            //params.put("station_code",station_code);
+            //params.put("run_id",production_run_id);
+
+            Integer line_id = (Integer) DataSource.getSqlMapInstance().queryForObject("getVehicleJobForBin", bin_number);
+            return line_id;
+        } catch (SQLException ex) {
+            throw new Exception("Vehicle job query crashed. Reported exception: " + ex);
+        }
+
+    }
+
     private static String criteriaCheckPreSort(Bin bin, Integer run_id) throws Exception {
 
         RmtSetup setup = (RmtSetup) DataSource.getSqlMapInstance().queryForObject("getRmtSetupPreSort", run_id);
@@ -223,6 +238,9 @@ public class BinTippingDAO {
             } else {
                // System.out.println("Bin weighed");
             }
+
+            if (getVehicleJobForBin(bin_number) != null)
+                return "BIN ON ACTIVE TRIPSHEET";
 
 
             if (bin.getDelivery_id() != null && bin.isGrower_commitment_required() != null && bin.isGrower_commitment_required() == true) {
