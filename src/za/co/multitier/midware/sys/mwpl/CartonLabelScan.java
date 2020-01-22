@@ -163,7 +163,7 @@ public class CartonLabelScan extends ProductLabelScan {
 
 
         String variety = label_setup.getVariety_short_long();
-        String lbl_variety = "(" + variety.substring(0, 3) + ")  " + variety.substring(3, variety.length());
+        String lbl_variety = "(" + variety.substring(0, 3) + ")  " + variety.substring(4, variety.length());
 
 
         data.put("F3", lbl_variety);
